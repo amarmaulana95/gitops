@@ -3,7 +3,14 @@ kind: Deployment
 metadata:
   name: dpl
 spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dpl
   template:
+    metadata:
+      labels:
+        app: dpl
     spec:
       containers:
         - name: backend-go
