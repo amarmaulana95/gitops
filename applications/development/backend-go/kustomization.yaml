@@ -9,4 +9,4 @@ patches:
   - path: patch/deployment.yaml
     target:
       kind: Deployment
-      name: backend-go
+      name: dpl
