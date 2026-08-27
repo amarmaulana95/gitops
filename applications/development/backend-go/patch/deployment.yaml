@@ -13,7 +13,7 @@ spec:
         app: dpl
     spec:
       containers:
-        - name: backend-go
+        - name: app
           image: localhost/backend-go:local-v1
           imagePullPolicy: IfNotPresent
           ports:
