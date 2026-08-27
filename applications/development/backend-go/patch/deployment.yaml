@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
         - name: backend-go
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Never
           resources:
             requests:
               cpu: 10m
