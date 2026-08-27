@@ -1,0 +1,91 @@
+[33mcommit 2f6da2342031862cfd4ddefdc88d771fee5fb66d[m
+Author: Amar Maulana <amar.unpak@gmail.com>
+Date:   Thu Aug 27 09:23:34 2026 +0700
+
+    chore: update repoURL to amarmaulana95/gitops
+
+[1mdiff --git a/applications/common/deployment.yaml b/applications/common/deployment.yaml[m
+[1mnew file mode 100644[m
+[1mindex 0000000..2726565[m
+[1m--- /dev/null[m
+[1m+++ b/applications/common/deployment.yaml[m
+[36m@@ -0,0 +1,79 @@[m
+[32m+[m[32mapiVersion: apps/v1[m
+[32m+[m[32mkind: Deployment[m
+[32m+[m[32mmetadata:[m
+[32m+[m[32m  name: dpl[m
+[32m+[m[32mspec:[m
+[32m+[m[32m  revisionHistoryLimit: 3[m
+[32m+[m[32m  selector:[m
+[32m+[m[32m    matchLabels:[m
+[32m+[m[32m      app: dpl[m
+[32m+[m[32m  template:[m
+[32m+[m[32m    metadata:[m
+[32m+[m[32m      labels:[m
+[32m+[m[32m        app: dpl[m
+[32m+[m[32m        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"[m
+[32m+[m[32m    spec:[m
+[32m+[m[32m      serviceAccountName: backend-go[m
+[32m+[m[32m      affinity:[m
+[32m+[m[32m        podAntiAffinity:[m
+[32m+[m[32m          preferredDuringSchedulingIgnoredDuringExecution:[m
+[32m+[m[32m          - weight: 100[m
+[32m+[m[32m            podAffinityTerm:[m
+[32m+[m[32m              labelSelector:[m
+[32m+[m[32m                matchLabels:[m
+[32m+[m[32m                  app: dpl[m
+[32m+[m[32m              topologyKey: kubernetes.io/hostname[m
+[32m+[m[32m      containers:[m
+[32m+[m[32m        - name: app[m
+[32m+[m[32m          image: dpl[m
+[32m+[m[32m          imagePullPolicy: IfNotPresent[m
+[32m+[m[32m          ports:[m
+[32m+[m[32m            - name: app-port[m
+[32m+[m[32m              containerPort: 4000[m
+[32m+[m[32m          env:[m
+[32m+[m[32m            - name: APP_BANKING_PRIVATE_KEY_PATH[m
+[32m+[m[32m              value: "/app/keys/banking_private_key.pem"[m
+[32m+[m[32m          envFrom:[m
+[32m+[m[32m            - secretRef:[m
+[32m+[m[32m                name: backend-go-secrets[m
+[32m+[m[32m                optional: false[m
+[32m+[m[32m          volumeMounts:[m
+[32m+[m[32m            - name: banking-pem[m
+[32m+[m[32m              mountPath: /app/keys[m
+[32m+[m[32m              readOnly: true[m
+[32m+[m[32m          startupProbe:[m
+[32m+[m[32m            httpGet:[m
+[32m+[m[32m              path: /healthz[m
+[32m+[m[32m              port: app-port[m
+[32m+[m[32m              scheme: HTTP[m
+[32m+[m[32m            failureThreshold: 30[m
+[32m+[m[32m            periodSeconds: 15[m
+[32m+[m[32m          readinessProbe:[m
+[32m+[m[32m            httpGet:[m
+[32m+[m[32m              path: /healthz[m
+[32m+[m[32m              port: app-port[m
+[32m+[m[32m              scheme: HTTP[m
+[32m+[m[32m            initialDelaySeconds: 20[m
+[32m+[m[32m            periodSeconds: 10[m
+[32m+[m[32m            successThreshold: 2[m
+[32m+[m[32m            failureThreshold: 3[m
+[32m+[m[32m            timeoutSeconds: 10[m
+[32m+[m[32m          livenessProbe:[m
+[32m+[m[32m            httpGet:[m
+[32m+[m[32m              path: /healthz[m
+[32m+[m[32m              port: app-port[m
+[32m+[m[32m              scheme: HTTP[m
+[32m+[m[32m            initialDelaySeconds: 20[m
+[32m+[m[32m            periodSeconds: 10[m
+[32m+[m[32m            successThreshold: 1[m
+[32m+[m[32m            failureThreshold: 3[m
+[32m+[m[32m            timeoutSeconds: 10[m
+[32m+[m[32m          resources:[m
+[32m+[m[32m            requests:[m
+[32m+[m[32m              cpu: 100m[m
+[32m+[m[32m              memory: 128Mi[m
+[32m+[m[32m      volumes:[m
+[32m+[m[32m        - name: banking-pem[m
+[32m+[m[32m          secret:[m
+[32m+[m[32m            secretName: backend-go-pem-secrets[m
+[32m+[m[32m            defaultMode: 256  # 0400 octal = 256 decimal[m
