@@ -6,7 +6,7 @@ spec:
   template:
     spec:
       containers:
-        - name: app
+        - name: backend-go
           image: localhost/backend-go:local-v1
           imagePullPolicy: IfNotPresent
           ports:
@@ -16,18 +16,18 @@ spec:
             httpGet:
               path: /healthz
               port: app-port
-            initialDelaySeconds: 20
+            initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /healthz
               port: app-port
-            initialDelaySeconds: 20
+            initialDelaySeconds: 10
             periodSeconds: 10
           resources:
             requests:
-              cpu: 100m
-              memory: 128Mi
+              cpu: 10m
+              memory: 32Mi
             limits:
               cpu: 100m
               memory: 128Mi
