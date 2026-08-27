@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
         - name: backend-go
-          image: backend-go:local-v1
+          image: localhost/backend-go:local-v1
           imagePullPolicy: Never
           resources:
             requests:
