@@ -8,7 +8,15 @@ spec:
       containers:
         - name: backend-go
           image: localhost/backend-go:local-v1
-          imagePullPolicy: Never
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 4000
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 4000
+            initialDelaySeconds: 5
+            periodSeconds: 10
           resources:
             requests:
               cpu: 10m
