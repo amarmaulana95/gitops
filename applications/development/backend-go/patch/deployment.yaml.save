@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deploymenmetadata:
+  name: dpl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dpl
+  template:
+    metadata:
+      labels:
+        app: dpl
+    spec:
+      containers:
+        - name: backend-go
+          image: localhost/backend-go:local-v1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 4000
+              name: app-port
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: app-port
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: app-port
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi

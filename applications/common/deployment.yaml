@@ -30,17 +30,6 @@ spec:
           ports:
             - name: app-port
               containerPort: 4000
-          env:
-            - name: APP_BANKING_PRIVATE_KEY_PATH
-              value: "/app/keys/banking_private_key.pem"
-          envFrom:
-            - secretRef:
-                name: backend-go-secrets
-                optional: false
-          volumeMounts:
-            - name: banking-pem
-              mountPath: /app/keys
-              readOnly: true
           startupProbe:
             httpGet:
               path: /healthz
@@ -72,8 +61,3 @@ spec:
             requests:
               cpu: 100m
               memory: 128Mi
-      volumes:
-        - name: banking-pem
-          secret:
-            secretName: backend-go-pem-secrets
-            defaultMode: 256  # 0400 octal = 256 decimal
