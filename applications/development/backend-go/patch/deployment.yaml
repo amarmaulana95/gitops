@@ -1,20 +1,16 @@
-# Deployment patch — development environment overrides
-# Image di-set eksplisit di sini (CI update field ini via yq/sed saat build)
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dpl
+  name: backend-go
 spec:
-  replicas: 1
   template:
     spec:
       containers:
-      - name: app
-        image: rezanaipospos/backend-go:22
-        resources:
-          requests:
-            cpu: 50m
-            memory: 64Mi
-          limits:
-            cpu: 50m
-            memory: 64Mi
+        - name: backend-go
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
